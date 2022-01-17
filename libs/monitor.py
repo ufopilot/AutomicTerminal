@@ -20,18 +20,20 @@ class Monitor(Widget):
 		self.system = self.settings.items['selected_system']
 		self.client = self.settings.items['selected_client'] 
 		if self.system == "" or self.client == "":
-			return self.loading_panel(self.title)
+			return self.error_panel("No system selected")
 
 
 		aut = Automic(self.system, self.client)
 		aut.connect()
-		data = aut.list_executions()
+		aut = Automic(self.system, self.client)
 		
+		if not aut.connect():
+			return self.error_panel("Connection error")
+
+		data = aut.list_executions()
 		if data == None:
-			return Align.center(
-		 		Panel("Error", title=self.title, height=100, expand=True, border_style="white"), 
-		 		vertical="top", 
-		 	)
+			return self.error_panel("Rest-request error")
+		
 		
 		table = Table(padding=(0,1,0,1), show_header=True, show_lines=False, expand=True, border_style="bright_black", box=box.MINIMAL_DOUBLE_HEAD)
 		table.add_column("Name", style="cyan", no_wrap=True)
@@ -73,8 +75,7 @@ class Monitor(Widget):
 					f"[{color}]{status_text}"
 				)
 		except:
-			print("connect faild")
-			exit()
+			return self.error_panel("Can't read response data properly.")
 
 		panel = Panel(
 			table,
@@ -85,16 +86,10 @@ class Monitor(Widget):
 		)
 		return panel
 
-	def loading_panel(self, title) -> Panel:
-		panel = Panel(
-			Align.center(
-				Group("", "\n", Align.center("[bold red]No system selected")),
-				vertical="top",
-			),
-			padding=(1, 2),
-			title=f"[b bright_black]{title}",
-			border_style="bright_black",
-			height=100,
-			expand=True
-		)
-		return panel
+	def error_panel(self, message):
+		return Panel(
+				f"[b red]{message}",
+				padding=(0, 0),
+				title=f"[b blue]{self.title}",
+				border_style="bright_black"
+			)

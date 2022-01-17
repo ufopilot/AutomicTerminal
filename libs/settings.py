@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-
+import shutil
 
 class Settings():
 	def __init__(self):
@@ -17,8 +17,11 @@ class Settings():
 			extDataDir = os.getcwd()
 			
 			self.json_file = "settings.json"
-		
+		 
 		self.settings_path = os.path.join(extDataDir, self.json_file)
+		if not os.path.exists(self.settings_path): 
+			shutil.copy("libs/settings_template.json", self.settings_path)
+
 		self.items = {}
 		self.deserialize()
 	

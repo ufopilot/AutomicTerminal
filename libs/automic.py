@@ -12,18 +12,21 @@ class Automic():
 		
 
 	def connect(self):
-		url = self.settings.items['systems'][self.system]['rest_url']
-		credentials = self.user + ':' + self.password
-		auth = base64.b64encode(credentials.encode()).decode()
-
-		aut.connection(
-			url=url, 
-			auth=auth,                  # base64 userid:password 
-			noproxy=True,               # defalut False 
-			sslverify=False,            # default True
-			cert='/path/to/certfile',   # default None
-			timeout=60                  # default 3600  
-		)
+		try:
+			url = self.settings.items['systems'][self.system]['rest_url']
+			credentials = self.user + ':' + self.password
+			auth = base64.b64encode(credentials.encode()).decode()
+			aut.connection(
+				url=url, 
+				auth=auth,                  # base64 userid:password 
+				noproxy=True,               # defalut False 
+				sslverify=False,            # default True
+				cert='/path/to/certfile',   # default None
+				timeout=60                  # default 3600  
+			)
+			return True
+		except:
+			return False
 
 	def list_executions(self):
 		try:

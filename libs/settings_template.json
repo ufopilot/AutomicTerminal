@@ -1,0 +1,25 @@
+{
+    "selected_system": "",
+    "selected_client": "",
+    "user": "",
+    "password": "",
+    "systems": {
+        "UCSYSTEM1": {
+            "rest_url": "https://example.com/rest/ucsystem1",
+            "awi_url": "https://example.com/awi/ucsystem1",
+            "clients": [
+                1
+            ]
+        },
+        "UCSYSTEM2": {
+            "rest_url": "https://example.com/rest/ucsystem1",
+            "awi_url": "https://example.com/awi/ucsystem1",
+            "clients": [
+                1
+            ]
+        }
+    },
+    "style": {
+        "border_style": "blue"
+    }
+}

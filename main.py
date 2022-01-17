@@ -66,9 +66,10 @@ class AutomicTerminal(App):
 			await left.update(Agents())
 			
 			#init Menu Panel
-			#await right.update(Menu())
-			
+			#######await right.update(Menu())
+			########
 			
 		await self.call_later(add_content)
-	
+
+
 AutomicTerminal.run(title="Automic", log="textual.log")
