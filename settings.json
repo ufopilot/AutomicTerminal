@@ -1,8 +1,8 @@
 {
-    "selected_system": "inteall1",
-    "selected_client": "1111",
+    "selected_system": "prodpci1",
+    "selected_client": "0001",
     "user": "xgadyou",
-    "password": "p01jan22",
+    "password": "",
     "systems": {
         "inteall1": {
             "rest_url": "https://automic-rest.in.gad.de/rest/inteall1",
