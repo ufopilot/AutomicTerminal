@@ -26,7 +26,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-settings.json
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -125,6 +124,8 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+settings.json
 
 # Pyre type checker
 .pyre/
+settings.json
