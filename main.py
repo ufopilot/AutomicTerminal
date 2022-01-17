@@ -3,6 +3,7 @@ from libs.menu import Menu
 from libs.monitor import Monitor
 from libs.agents import Agents
 from libs.header import AppHeader
+from libs.health import Health
 
 class AutomicTerminal(App):
 	async def on_load(self) -> None:
@@ -32,9 +33,10 @@ class AutomicTerminal(App):
 		self.left = left = ScrollView(auto_width=False)
 		self.main = main = ScrollView(auto_width=True)
 		
-		self.sub_header = Placeholder(name="sub_header")
-		self.top_header = Placeholder(name="top_header")
-		self.bottom = Placeholder(name="bottom")
+		self.sub_header = Widget(name="sub_header")
+		self.top_header = top_header = ScrollView(auto_width=False) 
+		#= Widget(name="top_header")
+		self.bottom = Widget(name="bottom")
 
 		self.sidebar = Widget(name="blub")
 		
@@ -56,14 +58,25 @@ class AutomicTerminal(App):
 			
 			#### init Header
 			appheader = AppHeader()
+			agents = Agents()
+			monitor = Monitor()
+			health = Health()
+
 			right.appheader = appheader
+			right.health = health  
+			right.agents = agents
+			right.monitor = monitor
+			
 			await header.update(appheader)
+			await left.update(agents)
+			await main.update(monitor)
+			await top_header.update(health)
 			
 			#init Monitor Panel
-			await main.update(Monitor())
+			#await main.update(Monitor())
 			
 			#init Agents Panel
-			await left.update(Agents())
+			#await left.update(Agents())
 			
 			#init Menu Panel
 			#######await right.update(Menu())

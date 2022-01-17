@@ -9,16 +9,20 @@ class Monitor(Widget):
 	def __init__(self, terminal=None, appheader=None):
 		super(self.__class__, self).__init__(terminal)
 		self.terminal = terminal
-		self.title = "Monitoring"
+		self.settings = Settings()
+		self.title = self.settings.items['panels']['monitor']['title']
+		self.border_style = self.settings.items['panels']['monitor']['border_style']
+		self.refresh_time = self.settings.items['panels']['monitor']['refresh_time']
 		
 		
 	def on_mount(self):
-		self.set_interval(15, self.refresh)
+		self.set_interval(self.refresh_time, self.refresh)
 		
 	def render(self):
 		self.settings = Settings()
 		self.system = self.settings.items['selected_system']
-		self.client = self.settings.items['selected_client'] 
+		self.client = self.settings.items['selected_client']
+		 
 		if self.system == "" or self.client == "":
 			return self.error_panel("No system selected")
 
@@ -37,11 +41,11 @@ class Monitor(Widget):
 		
 		table = Table(padding=(0,1,0,1), show_header=True, show_lines=False, expand=True, border_style="bright_black", box=box.MINIMAL_DOUBLE_HEAD)
 		table.add_column("Name", style="cyan", no_wrap=True)
-		table.add_column("Runid", width=8, justify="left", style="magenta")
-		table.add_column("Parentid", width=8, justify="left", style="magenta")
+		table.add_column("Runid", width=9, justify="left", style="magenta")
+		table.add_column("Parentid", width=9, justify="left", style="magenta")
 		table.add_column("User", width=8, style="green")
-		table.add_column("Timestamp", width=16, style="white")
-		table.add_column("Status", width=40)
+		table.add_column("Timestamp", width=19, style="white")
+		table.add_column("Status", width=50)
 		awiurl = self.settings.items['systems'][self.system]['awi_url']    
 		#table.add_row("Raising shields", "[bold magenta]COMPLETED [green]:heavy_check_mark:")        
 		try: 
@@ -80,8 +84,8 @@ class Monitor(Widget):
 		panel = Panel(
 			table,
 			padding=(0, 0),
-			title="[b blue]Monitoring",
-			border_style="blue",
+			title=f"[b blue]{self.title}",
+			border_style=f"{self.border_style}",
 			expand=True
 		)
 		return panel

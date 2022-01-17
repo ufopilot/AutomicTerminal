@@ -3,19 +3,26 @@
     "selected_client": "",
     "user": "",
     "password": "",
+
     "systems": {
         "UCSYSTEM1": {
             "rest_url": "https://example.com/rest/ucsystem1",
+            "rest_sslverify": false,
+            "rest_sslcert": "/path/to/certfile",
+            "rest_noproxy": true,
             "awi_url": "https://example.com/awi/ucsystem1",
             "clients": [
-                1
+                1,2
             ]
         },
         "UCSYSTEM2": {
             "rest_url": "https://example.com/rest/ucsystem1",
+            "rest_sslverify": false,
+            "rest_sslcert": "/path/to/certfile",
+            "rest_noproxy": true, 
             "awi_url": "https://example.com/awi/ucsystem1",
             "clients": [
-                1
+                1,10
             ]
         }
     },

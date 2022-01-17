@@ -9,19 +9,34 @@ class Automic():
 		self.password = self.settings.items['password']
 		self.client = client
 		self.system = system.lower()
+		self.sslverify = self.settings.items['systems'][self.system]['rest_sslverify']
+		self.sslcert = self.settings.items['systems'][self.system]['rest_sslcert']
+		self.noproxy = self.settings.items['systems'][self.system]['rest_noproxy']
 		
+	def isBase64(self, s):
+		try:
+			base64.b64encode(base64.b64decode(s)) == s
+			return True
+		except Exception:
+			return False
 
 	def connect(self):
 		try:
 			url = self.settings.items['systems'][self.system]['rest_url']
-			credentials = self.user + ':' + self.password
+			if self.isBase64(self.password):
+				password = base64.b64decode(self.password).decode("utf-8")
+			else:
+				password = self.password
+			
+			credentials = self.user + ':' + password
 			auth = base64.b64encode(credentials.encode()).decode()
+			
 			aut.connection(
 				url=url, 
 				auth=auth,                  # base64 userid:password 
-				noproxy=True,               # defalut False 
-				sslverify=False,            # default True
-				cert='/path/to/certfile',   # default None
+				noproxy=self.noproxy,       # defalut False 
+				sslverify=self.sslverify,   # default True
+				cert=self.sslcert,   		# default None
 				timeout=60                  # default 3600  
 			)
 			return True
@@ -37,5 +52,11 @@ class Automic():
 	def list_agents(self):
 		try:
 			return aut.listAgents(client_id=self.client).response['data']
+		except:
+			return None
+
+	def health_check(self):
+		try:
+			return aut.healthCheck(client_id=self.client).response
 		except:
 			return None

@@ -6,10 +6,13 @@ class Menu(GridView):
 	LIGHT = "black on rgb(165,165,165)"
 	YELLOW = "black on rgb(255,159,7)"
 
-	def __init__(self, terminal=None, appheader=None):
+	def __init__(self, terminal=None, appheader=None, agents=None, monitor=None, health=None):
 		super(self.__class__, self).__init__(terminal)
 		self.terminal = terminal
 		self.appheader = appheader
+		self.agents = agents
+		self.monitor = monitor
+		self.health = health
 		self.settings = Settings()
 
 	def on_mount(self) -> None:
@@ -53,7 +56,7 @@ class Menu(GridView):
 
 		#body.update(self.grid)
 
-	def handle_button_pressed(self, message: ButtonPressed) -> None:
+	async def handle_button_pressed(self, message: ButtonPressed) -> None:
 		"""A message sent by the button widget"""
 
 		assert isinstance(message.sender, Button)
@@ -64,4 +67,9 @@ class Menu(GridView):
 		self.settings.items['selected_system'] = button_name.strip().split('_')[0].lower()
 		self.settings.items['selected_client'] = button_name.strip().split('_')[1]
 		self.settings.serialize()
+		#sleep(1)
+		self.appheader.refresh()
+		self.health.refresh() 
+		self.agents.refresh()
+		self.monitor.refresh()
 		

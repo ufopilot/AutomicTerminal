@@ -15,7 +15,7 @@ class AppHeader(Widget):
 		}
 
 	def on_mount(self):
-		self.set_interval(1, self.refresh)
+		self.set_interval(60, self.refresh)
 
 	def render(self):
 		grid = Table.grid(expand=True)
@@ -27,6 +27,6 @@ class AppHeader(Widget):
 			grid.add_row(
 				"[b]Automic[/b] System Overview: {}:{}".format(self.data['system'].upper(), str(self.data['client'])),
 				"[b]{}[/b]".format(self.data['user']),
-				datetime.now().ctime()#.replace(":", "[blink]:[/]"),
+				datetime.now().strftime("%d.%m.%Y %H:%M") #.replace(":", "[blink]:[/]"),
 			)
 		return Panel(grid, style="white on blue")
