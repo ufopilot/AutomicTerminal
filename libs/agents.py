@@ -14,7 +14,7 @@ class Agents(Widget):
 		self.title = self.settings.items['panels'][self.panel]['title']
 		self.border_style = self.settings.items['panels'][self.panel]['border_style']
 		self.refresh_time = self.settings.items['panels'][self.panel]['refresh_time']
-		
+		self.max_rows = self.settings.items['panels']['monitor']['max_rows']
 		
 	def on_mount(self):
 		self.set_interval(self.refresh_time, self.refresh)
@@ -47,7 +47,9 @@ class Agents(Widget):
 				else:
 					status = "[b red]Off"
 				table.add_row( o['name'], status)
-
+			
+			for x in range(self.max_rows):
+				table.add_row("", "")		
 		except:
 			return self.error_panel("Can't read response data properly.")
 

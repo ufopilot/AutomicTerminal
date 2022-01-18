@@ -13,6 +13,7 @@ class Monitor(Widget):
 		self.title = self.settings.items['panels']['monitor']['title']
 		self.border_style = self.settings.items['panels']['monitor']['border_style']
 		self.refresh_time = self.settings.items['panels']['monitor']['refresh_time']
+		self.max_rows = self.settings.items['panels']['monitor']['max_rows']
 		
 		
 	def on_mount(self):
@@ -78,6 +79,9 @@ class Monitor(Widget):
 					str(time.replace('T', ' ').replace('Z', '').replace(" ","_")),
 					f"[{color}]{status_text}"
 				)
+
+			for x in range(self.max_rows):
+				table.add_row("", "","", "","", "")
 		except:
 			return self.error_panel("Can't read response data properly.")
 

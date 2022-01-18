@@ -8,19 +8,30 @@ from libs.health import Health
 class AutomicTerminal(App):
 	async def on_load(self) -> None:
 		"""Bind keys here."""
-		await self.bind("t", "toggle_sidebar", "Toggle Menu")
+		await self.bind("a", "toggle_assembly", "Toggle Assembly")
+		await self.bind("r", "toggle_report", "Toggle Report Viewer")
 		await self.bind("q", "quit", "Quit")
 		#await self.bind("m", "quit", "Monitor")
 
-	show_bar = Reactive(False)
+	show_assembly = Reactive(False)
+	show_report = Reactive(False)
 
-	def watch_show_bar(self, show_bar: bool) -> None:
-		"""Called when show_bar changes."""
-		self.sidebar.animate("layout_offset_x", 0 if show_bar else -40)
+	def watch_show_assembly(self, show_assembly: bool) -> None:
+		"""Called when show_assembly changes."""
+		self.assembly.animate("layout_offset_x", 0 if show_assembly else -40, duration=0.5)
+		self.explorer.animate("layout_offset_x", 0 if show_assembly else -240, duration=0.5)
+	
+	def watch_show_report(self, show_report: bool) -> None:
+		"""Called when show_report changes."""
+		self.report.animate("layout_offset_x", 0 if show_report else -40, duration=0.5)
 
-	def action_toggle_sidebar(self) -> None:
+	def action_toggle_assembly(self) -> None:
 		"""Called when user hits toggle key."""
-		self.show_bar = not self.show_bar
+		self.show_assembly = not self.show_assembly
+	
+	def action_toggle_report(self) -> None:
+		"""Called when user hits toggle key."""
+		self.show_report = not self.show_report
 
 	async def on_mount(self) -> None:
 
@@ -31,14 +42,16 @@ class AutomicTerminal(App):
 		self.right.terminal = self
 		
 		self.left = left = ScrollView(auto_width=False)
-		self.main = main = ScrollView(auto_width=True)
+		self.main = main = ScrollView(auto_width=False)
 		
 		self.sub_header = Widget(name="sub_header")
 		self.top_header = top_header = ScrollView(auto_width=False) 
 		#= Widget(name="top_header")
 		self.bottom = Widget(name="bottom")
 
-		self.sidebar = Widget(name="blub")
+		self.assembly = Widget(name="assembly")
+		self.explorer = Widget(name="explorer")
+		self.report = Widget(name="report")
 		
 		# docks
 		await self.view.dock(self.header, edge="top", size=3)
@@ -48,12 +61,17 @@ class AutomicTerminal(App):
 		 
 		await self.view.dock(self.left, edge="left", size=30)
 		await self.view.dock(self.top_header, self.sub_header, edge="top", size=5)
-		await self.view.dock(self.right, edge="right", size=20)
+		await self.view.dock(self.right, edge="right", size=17)
 		await self.view.dock(self.main, edge="right")
-		await self.view.dock(self.sidebar, edge="left", size=40, z=1)
+		await self.view.dock(self.assembly, edge="left", size=40, z=1)
+		await self.view.dock(self.explorer, edge="left", size=200, z=1)
+		await self.view.dock(self.report, edge="left", size=40, z=2)
 		
-		self.sidebar.layout_offset_x = -40
-
+		self.assembly.layout_offset_x = -40
+		self.explorer.layout_offset_x = -240
+		self.report.layout_offset_x = -40
+		#self.right.layout_offset_x = +400
+		
 		async def add_content():
 			
 			#### init Header
@@ -83,6 +101,5 @@ class AutomicTerminal(App):
 			########
 			
 		await self.call_later(add_content)
-
 
 AutomicTerminal.run(title="Automic", log="textual.log")
